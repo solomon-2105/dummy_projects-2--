@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en"><center>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Morse Code Translator</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <script>
+        async function translateText() {
+            let text = document.getElementById("text").value;
+            let mode = document.getElementById("mode").value;
+            let response = await fetch("/translate", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ text: text, mode: mode })
+            });
+            let result = await response.json();
+            document.getElementById("output").innerText = result.translated;
+        }
+    </script>
+</head>
+<body>
+    <h2>Morse Code Translator</h2>
+    <label for="mode">Select Mode:</label>
+    <select id="mode">
+        <option value="text-to-morse">Text to Morse</option>
+        <option value="morse-to-text">Morse to Text</option>
+    </select>
+    <br><br>
+    <textarea id="text" placeholder="Enter text or Morse code"></textarea>
+    <br><br>
+    <button onclick="translateText()">Translate</button>
+    <h3>Output:</h3>
+    <p id="output"></p>
+</body></center>
+</html>
